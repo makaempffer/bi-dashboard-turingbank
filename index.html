@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Riesgo Crediticio - Advanced</title>
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- D3 Sankey Plugin -->
+    <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Dashboard de Riesgo Crediticio</h1>
+
+    <div class="dashboard-grid">
+        <!-- KPI Cards -->
+        <div class="kpi-container">
+            <div class="kpi-card">
+                <div class="kpi-label">Total Clientes</div>
+                <div class="kpi-value" id="kpi-total">-</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Tasa Aprobación</div>
+                <div class="kpi-value" id="kpi-approval">-</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Score Promedio</div>
+                <div class="kpi-value" id="kpi-score">-</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Ratio Deuda/Solicitado</div>
+                <div class="kpi-value" id="kpi-debt">-</div>
+            </div>
+        </div>
+
+        <!-- Row 1: Sankey Diagram (Flow) -->
+        <div class="chart-container sankey-section">
+            <div class="chart-header">
+                <h2 class="chart-title">Flujo de Segmentación (Nacionalidad → Contrato → Decisión)</h2>
+            </div>
+            <div id="sankey-chart" style="width: 100%; height: 100%;"></div>
+        </div>
+
+        <!-- Row 1: Details/Scatter (Placeholder for now, using space for layout balance) -->
+        <div class="chart-container details-section">
+            <div class="chart-header">
+                <h2 class="chart-title">Detalle de Clientes (Top 50 Filtrados)</h2>
+            </div>
+            <div class="data-table-wrapper">
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Edad</th>
+                            <th>Nacionalidad</th>
+                            <th>Ingresos</th>
+                            <th>Score</th>
+                            <th>Decisión</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Row 2: Linked Histograms -->
+        <div class="histograms-section">
+            <div class="histogram-container" id="hist-score"></div>
+            <div class="histogram-container" id="hist-income"></div>
+            <div class="histogram-container" id="hist-debt"></div>
+        </div>
+    </div>
+
+    <div id="tooltip" class="tooltip"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -197,58 +197,6 @@ const brushes = {};
 function renderHistograms() {
     renderHistogram("score_riesgo", "#hist-score", "Score de Riesgo", [0, 1000]);
     renderHistogram("ingresos_mensuales", "#hist-income", "Ingresos Mensuales", [0, 3000000]); // Capped for visibility
-    renderHistogram("deuda_total", "#hist-debt", "Deuda Total", [0, 10000000]); // Capped
-}
-
-function renderHistogram(key, selector, title, domain) {
-    const container = d3.select(selector);
-    container.html(`<h4>${title}</h4>`); // Simple title
-    const width = container.node().getBoundingClientRect().width - 40;
-    const height = 250;
-    const margin = { top: 10, right: 20, bottom: 30, left: 40 };
-
-    const svg = container.append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const x = d3.scaleLinear()
-        .domain(domain || d3.extent(globalData, d => d[key]))
-        .range([0, width]);
-
-    const histogram = d3.bin()
-        .value(d => d[key])
-        .domain(x.domain())
-        .thresholds(x.ticks(20));
-
-    const bins = histogram(filteredData);
-
-    const y = d3.scaleLinear()
-        .range([height, 0])
-        .domain([0, d3.max(bins, d => d.length)]);
-
-    svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).ticks(5).tickFormat(d3.format(".2s")));
-
-    svg.append("g")
-        .call(d3.axisLeft(y).ticks(5));
-
-    const bars = svg.selectAll("rect")
-        .data(bins)
-        .join("rect")
-        .attr("x", 1)
-        .attr("transform", d => `translate(${x(d.x0)},${y(d.length)})`)
-        .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 1))
-        .attr("height", d => height - y(d.length))
-        .style("fill", "#69b3a2");
-
-    // Brushing
-    const brush = d3.brushX()
-        .extent([[0, 0], [width, height]])
-        .on("end", (event) => brushed(event, key, x));
-
     svg.append("g")
         .attr("class", "brush")
         .call(brush);
